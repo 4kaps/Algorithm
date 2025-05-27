@@ -1,0 +1,63 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+queue<int> q;
+int maps[1001][1001];
+bool visited[1001];
+
+int bfs(int n, int size){
+    q.push(n);
+    visited[n] = true;
+    int cnt = 0;
+    while(!q.empty()){
+        int t = q.front();
+        q.pop();
+        cnt++;
+        for(int i=1; i<=size; i++){
+            if(maps[t][i] != 0 && !visited[i]){
+                q.push(i);
+                visited[i] = true;
+            }
+        }
+    }
+    return cnt;
+}
+
+int main(){
+    int t, n, a, b, c;
+    cin >> t;
+    while(t--){
+        for(int i=0; i<1001; i++){
+            for(int j=0; j<1001; j++){
+                maps[i][j] = 0;
+            }
+            visited[i] = false;
+        }
+
+        cin >> n;
+        for(int i=0; i<n; i++){
+            cin >> a >> b;
+            for(int j=0; j<b; j++){
+                cin >> c;
+                maps[a][c] = 1;
+            }
+        }
+
+        vector<int> v;
+        for(int i=1; i<=n; i++){
+            if(!visited[i]){
+                v.push_back(bfs(i, n));
+            }
+        }
+
+        sort(v.begin(), v.end());
+        cout << v.size() << " ";
+        for(int i=0; i<v.size(); i++){
+            cout << v[i] << " ";
+        }
+        cout << '\n';
+    }
+}
